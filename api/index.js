@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
-mongoose.connect('mongodb+srv://abhiktd15:9g3EYIYONV9ZFIVf@cluster0.sic7gp4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0').then(console.log("database connected"))
+mongoose.connect(mongoDB_URL)
 
 app.post('/register', async (req,res) => {
     const {username,password} = req.body;
