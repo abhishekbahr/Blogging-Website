@@ -21,6 +21,7 @@ app.use('/uploads', express.static(__dirname + '/uploads'));
 
 mongoose.connect(mongoDB_URL)
 
+//for registering or signup api  
 app.post('/register', async (req,res) => {
     const {username,password} = req.body;
     try{
@@ -35,6 +36,7 @@ app.post('/register', async (req,res) => {
     }
 });
 
+//login api 
 app.post('/login', async (req,res) => {
     const {username,password} = req.body;
     const userDoc = await User.findOne({username});
@@ -65,6 +67,8 @@ app.post('/logout', (req,res) => {
     res.cookie('token', '').json('ok');
 });
 
+
+//API for creating the new post
 app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
     const {originalname,path} = req.file;
     const parts = originalname.split('.');
@@ -88,6 +92,8 @@ app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
 
 });
 
+
+//API for updating the existing post of the user
 app.put('/post',uploadMiddleware.single('file'), async (req,res) => {
     let newPath = null;
     if (req.file) {
@@ -119,6 +125,8 @@ app.put('/post',uploadMiddleware.single('file'), async (req,res) => {
 
 });
 
+
+//API for getting all the post in the database
 app.get('/post', async (req,res) => {
     res.json(
         await Post.find()
@@ -128,6 +136,7 @@ app.get('/post', async (req,res) => {
   );
 });
 
+//API for getting post by user id 
 app.get('/post/:id', async (req, res) => {
     const {id} = req.params;
     const postDoc = await Post.findById(id).populate('author', ['username']);
